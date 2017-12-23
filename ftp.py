@@ -1,6 +1,7 @@
 import socket
 import re
 
+
 class ftp:
     def __init__(self):
         self.control_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -81,6 +82,7 @@ class ftp:
             psw = input("Password: ")
             pas = self.send_comand("PASS " + psw)
         print(pas)
+        return nm + pas
 
     def pasv(self):
         reply = self.send_comand('PASV')
@@ -92,17 +94,21 @@ class ftp:
         parameters = (ip_address, port_number)
         self.data_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.data_socket.connect(parameters)
-        print(parameters)
+        #print(parameters)
         self.data_socket.settimeout(3)
+        return reply
 
 
     def ls(self):
         self.pasv()
         print(self.send_comand("LIST"))
-        print(self.data_socket.recv(65535).decode('ASCII'))
-        print(self.data_socket.recv(65535).decode('ASCII'))
+        a = self.data_socket.recv(65535).decode('ASCII')
+        print(a)
+        b = self.data_socket.recv(65535).decode('ASCII')
+        print(b)
         self.data_socket.close()
         print(self.ftp_ans())
+        return a + b
 
     def port(self):
         pass

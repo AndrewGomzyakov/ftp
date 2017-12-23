@@ -2,11 +2,13 @@ import socket
 import re
 import argparse
 import ftp
+import sys
 
 
 def main():
     a = ftp.ftp()
-    a.connect("212.193.68.227", 21)
+    args = parse_args(sys.argv)
+    a.connect(socket.gethostbyname(args.adr), args.port)
     print(a.ftp_ans())
     print(a.login())
     while True:
@@ -41,23 +43,11 @@ def main():
             file_name = comand[5:]
             a.upload_file(file_name)
 
-
-
-
-
-
-
-
-def parse_args():
-    parser = argparse.ArgumentParser(prog='ftp.py', description='Connects to ftp server')
-    group = parser.add_mutually_exclusive_group()
-    parser.add_argument('address', help='address to connect')
-    parser.add_argument('port', help='port', nargs='?', type=int, default=21)
-    parser.add_argument('--passive', help='use passive mode instead of active', action='store_true')
-    group.add_argument('--get', '-g', help='dowload file', action='store_true')
-    group.add_argument('--put', '-p', help='upload file', action='store_true')
-    parser.add_argument('--local', '-l', help='local file to handle')
-    parser.add_argument('--remote', '-r', help='remote file to handle')
-    return parser.parse_args()
+def parse_args(args):
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-adr", dest="adr", type=str,  help='Адрес FTP сервера')
+    parser.add_argument('-port', dest="port", help='Задает порт для подключения(по умолчанию 21)', type=int, default=21)
+    rez = parser.parse_args(args[1:])
+    return rez
 
 main()
