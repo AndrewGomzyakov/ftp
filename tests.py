@@ -50,9 +50,8 @@ class FTPTests(unittest.TestCase):
 
     def test_cd(self):
         dir_name = "new_dir"
-        expected = '250 OK. Current directory is "' + dir_name + '"\r\n'
         self.ftp.cd(dir_name)
-        self.assertEqual(self.ftp.send_comand("PWD"), expected)
+        self.assertEqual(self.ftp.send_comand("PWD"), '250 OK. Current directory is "' + dir_name + '"\r\n')
 
 if __name__ == '__main__':
     unittest.main()
