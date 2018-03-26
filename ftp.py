@@ -48,6 +48,7 @@ class ftp:
 
 
     def download_file(self, file_name):
+
         file_size = int(self.size(file_name))
         #file_size = 100
         recv = 0

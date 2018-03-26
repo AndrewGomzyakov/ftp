@@ -9,6 +9,7 @@ import getpass
 def main():
     a = ftp.ftp()
     args = parse_args(sys.argv)
+    print(args)
     a.connect(socket.gethostbyname(args.adr), args.port)
     #a.connect(socket.gethostbyname("ftp.mccme.ru"), 21)
     print(a.ftp_ans())
@@ -23,40 +24,39 @@ def main():
         print(a.login())
     while True:
         comand = input("->")
-        comand = comand.upper()
-        if comand == 'LIST':
+        if comand.upper() == 'LIST':
             print(a.ls())
-        elif comand == 'QUIT':
+        elif comand.upper() == 'QUIT':
             a.close()
             break
-        elif comand == "USER":
+        elif comand.upper() == "USER":
             name = input("Username: ")
             a.login(name)
-        elif comand[:3] == "CWD":
+        elif comand[:3].upper() == "CWD":
             dir = comand[4:]
             a.cd(dir)
-        elif comand[:3] == "MKD":
+        elif comand[:3].upper() == "MKD":
             dir = comand[4:]
             a.md(dir)
-        elif comand[:4] == "RETR":
+        elif comand[:4].upper() == "RETR":
             file_name = comand[5:]
             a.download_file(file_name)
-        elif comand == "PWD":
+        elif comand.upper() == "PWD":
             print(a.send_comand(comand))
-        elif comand == "FEAT":
+        elif comand.upper() == "FEAT":
             print(a.send_comand(comand))
-        elif comand == "HELP":
+        elif comand.upper() == "HELP":
             print(a.send_comand(comand))
-        elif comand[:4] == "SIZE":
+        elif comand[:4].upper() == "SIZE":
             file_name = comand[5:]
             print(a.size(file_name))
-        elif comand[:4] == "STOR":
+        elif comand[:4].upper() == "STOR":
             file_name = comand[5:]
             a.upload_file(file_name)
-        elif comand[:2] == "LA":
+        elif comand[:2].upper() == "LA":
             cur_dir = comand[3:]
             a.rec_list(0, cur_dir)
-        elif comand[:4] == "LOAD":
+        elif comand[:4].upper() == "LOAD":
             cur_dir = comand[5:]
             a.rec_download(cur_dir)
 
@@ -69,4 +69,5 @@ def parse_args(args):
     rez = parser.parse_args(args[1:])
     return rez
 
-main()
+if __name__ == '__main__':
+    main()
